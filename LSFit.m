@@ -1,7 +1,9 @@
 function h = LSFit(xarr,yarr,time)
 %% Change polar coordinates to Regular
 %A=load('Positional_Values.txt');
-
+%change above code to take in x and y positional data from camera?
+%i think that a lot of these equations need to be changed to account for the movement of a bowling ball which is far less complicated than that of a baseball?
+%i also feel like we might not need to care about the y velocity? maybe not even try to calculate it
 figure(1)
 x = xarr'; %A(1,:)';
 y = yarr'; %A(2,:)';
@@ -150,7 +152,7 @@ title('Predicted Acceleration over Time')
 xlabel('time (sec)')
 ylabel('Acceleration (m/s^2)')
 
-time_final = 7;
+time_final = 7; %change this to be around 3 seconds, only takes about 3 seconds for bowling ball to get to 
 curvefit_acc(time_final);
 
 formula(curvefit_acc);
@@ -163,7 +165,7 @@ fprintf('Acceleration Equation: %f \n', p19);
 
 %% Final Time
 
-xf = 252; %inches
+xf = 252; %inches %this needs to be changed to be the end of the bowling lane
 xfm = (xf/39.37) - x(1); %meters
 c = -xfm;
 v0 = p6;
