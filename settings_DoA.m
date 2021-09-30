@@ -7,7 +7,7 @@ NFFTAnt             =  256;
 NrMIMO              =  8;       % Number of MIMO channels 
 min_range           =   1;  % minimum calculated range in meters
 max_range           =   10;  % maximum calculated range in meters
-
+%%idk if the stuff above this comment is what i can change to change the range...i think it is!!!!
 
 % do not change
 c0                  =   3 * 10^8;   % speed of light
