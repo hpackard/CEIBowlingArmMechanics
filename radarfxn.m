@@ -68,8 +68,8 @@ NciSz = NoRange*ramps*nciBinSz;
 %% AoA parameters
 NFFTAnt             =  256;
 NrMIMO              =  8;       % Number of MIMO channels 
-min_range           =   0.5;  % minimum calculated range in meters
-max_range           =   6;  % maximum calculated range in meters
+min_range           =   1;  % minimum calculated range in meters
+max_range           =   21.32;  % maximum calculated range in meters
 
 [~, min_range_idx]  =   min(abs(r_vect - min_range));
 [~, max_range_idx]  =   min(abs(r_vect - max_range));
@@ -180,12 +180,12 @@ for idx=1:1:idx_length
     end
     
 end
-timer1 = toc
+timer1 = toc;
 
-points = length(x);
-fileID = fopen('pitchdat.txt','w');
-fprintf(fileID,'%6s',x(points));
-fclose(fileID);
+% points = length(x);
+% fileID = fopen('pitchdat.txt','w');
+% fprintf(fileID,'%6s',x(points));
+% fclose(fileID);
 
 
 boardRadar.stopMeasurements();
@@ -200,7 +200,7 @@ plot(y,-x,'o');
 title('Scatterplot of x and y Positional Values');
 xlabel('Horizontal distance from radar');
 ylabel('Vertical distance from radar');
- 
+%  
 fileID = fopen('Positional_Values.txt','w');
 fprintf(fileID,'%f ',y);
 fprintf(fileID,'\n');
@@ -209,4 +209,4 @@ fprintf(fileID,'\n');
 fprintf(fileID,'%f ',t);
 fclose(fileID);
 
-%LSFit(y,-x,t);
+LSFit(y,-x,t);

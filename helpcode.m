@@ -1,1 +1,1 @@
-radarfxn(1000);
+radarfxn(200);
