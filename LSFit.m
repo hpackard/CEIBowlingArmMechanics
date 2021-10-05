@@ -1,24 +1,48 @@
 function h = LSFit(xarr,yarr,time)
 %% Change polar coordinates to Regular
-%A=load('Positional_Values.txt');
+A=load('handpositions.txt');
 
-figure(1)
-x = xarr'; %A(1,:)';
-y = yarr'; %A(2,:)';
-plot(x,y,'o');
-title('Rectangular Coordinates of Pitch')
-xlabel('Distance (m)')
-ylabel('Height (m)')
+% figure(1)
+% x = xarr'; %A(1,:)';
+% y = yarr'; %A(2,:)';
+% plot(x,y,'o');
+% title('Rectangular Coordinates of Pitch')
+% xlabel('Distance (m)')
+% ylabel('Height (m)')
 %% Position - x vs time
 XX = xarr';
 t =  time';
 
 figure(2)
 plot(t,XX,'o')
-title('X Position over Time')
+title('X Position Ball over Time')
 xlabel('time (sec)')
 ylabel('x (m)')
 
+%figure out how to read time data into matlab from camera
+ty=1:length(A);
+handpositiony=A;
+figure(3)
+plot(ty,handpositiony, 'o')
+title('Y position right hand over Time')
+xlabel('time(sec)')
+ylabel('y hand position')
+
+% tx=1:length(A(2,:));
+% handpositionx=A(2,:);
+% figure(3)
+% plot(tx,handpositionx, 'o')
+% title('x position right hand over Time')
+% xlabel('time(sec)')
+% ylabel('x hand position')
+% 
+% tz=1:length(A(3,:));
+% handpositionz=A(3,:);
+% figure(3)
+% plot(tz,handpositionz, 'o')
+% title('z position right hand over Time')
+% xlabel('time(sec)')
+% ylabel('z hand position')
 %[B,TF] = rmoutliers(XX,'movmedian',0.05,'SamplePoints',t);
 %plot(t,XX,'b.-',t(~TF),B,'r.-')
 %legend('Input Data','Output Data')
