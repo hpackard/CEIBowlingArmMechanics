@@ -6,37 +6,30 @@ C=load('handpositionsz.txt');
 
 %% Position - x vs time
 XX = xarr';
-t =  time';
-figure(2)
+t =  time'; %0:0.5:200; %%200 is what we put into help code
+% XXu=unique(XX, 'stable');
+% tu= t';
+%create a function that eliminates duplicate points
+% 
+% figure(2)
 plot(t,XX, 'o');
-title('X Position over Time')
+title('X Ball Position over Time')
 xlabel('time (sec)')
 ylabel('x (m)')
 
-% curvefit_x(t);
-% 
-% formula(curvefit_x);
-% p1 = curvefit_x.p1;
-% p2 = curvefit_x.p2;
-% p3 = curvefit_x.p3;
-% %p4 = curvefit_x.p4;
-% equation_x = p1*(t.^2) + p2*t + p3; % + p4; 
-% fprintf('X Equation: %ft^2 + %ft + %f \n', p1,p2,p3);%,p4);
-% 
-% % Differentiate to get the predicted velocity in x direction
-% figure(2)
-% fx = differentiate(curvefit_x,t);
-% plot(t,fx,'o');
-% %fxx=differentiate(XX,t);
-% 
-% % Get equation of best fit line of velocity
-% curvefit_x_velo = fit(t,fx,'poly1','normalize','off');
-% figure(12)
-% plot(curvefit_x_velo,t,fx);
-% title('Predicted X-Velocity over Time')
-% xlabel('time (sec)')
-% ylabel('Vx (m/s)')
-
+%code below is for when we figure out why our data pts aren't unique
+% xxball=0:0.1:200;
+% yball=spline(tu,XXu, xxball);
+% plot(tu,XXu, 'o', xxball,yball)
+% title('X ball position over Time')
+% xlabel('time(sec)')
+% ylabel('ball position')
+% ball_velocity=diff(yball);
+% figure(4)
+% plot(tu, ball_velocity, 'o')
+% title('ball velocity')
+% xlabel('time(sec)')
+% ylabel('V(m/sec)')
 % % after this, add eqns for rotational velocity
 %x=r(wt+sinwt) for position where r is the radius, where w is the
 %angular velocity
@@ -49,179 +42,82 @@ ylabel('x (m)')
 %figure out how to read time data into matlab from camera
 ty=1:length(A);
 handpositiony=A;
-figure(5)
-plot(ty,handpositiony, 'o')
+figure(3)
+xx=0:1:89;
+yy=spline(ty,handpositiony, xx);
+plot(ty,handpositiony, 'o', xx,yy)
 title('Y position right hand over Time')
 xlabel('time(sec)')
 ylabel('y hand position')
-
+y_velocityhand=diff(yy);
+figure(4)
+plot(ty, y_velocityhand, 'o')
+title('Y-hand velocity')
+xlabel('time(sec)')
+ylabel('V(m/sec)')
+%y hand velocity is derivative of spline
+% 
 tx=1:length(B);
 handpositionx=B;
-figure(6)
-plot(tx,handpositionx, 'o')
-title('x position right hand over Time')
+figure(5)
+xxx=0:1:89;
+yyy=spline(tx,handpositionx, xxx);
+plot(tx,handpositionx, 'o', xxx,yyy)
+title('X position right hand over Time')
 xlabel('time(sec)')
-ylabel('x hand position')
+ylabel('X hand position')
+x_velocityhand=diff(yyy);
+figure(6)
+plot(tx, x_velocityhand, 'o')
+title('X-hand velocity')
+xlabel('time(sec)') 
+ylabel('V(m/sec)')
+
 
 tz=1:length(C);
 handpositionz=C;
 figure(7)
-plot(tz,handpositionz, 'o')
-title('z position right hand over Time')
+xx=0:1:89;
+yyyy=spline(tz,handpositionz, xx);
+plot(tz,handpositionz, 'o', xx,yyyy)
+title('Z position right hand over Time')
 xlabel('time(sec)')
-ylabel('z hand position')
-
+ylabel('Z hand position')
+z_velocityhand=diff(yyyy);
+figure(12)
+plot(tz, z_velocityhand, 'o')
+title('Z-hand velocity')
+xlabel('time(sec)')
+ylabel('V(m/sec)')
 
 figure(8)
-plot3(handpositionx, handpositiony, handpositionz, '-o')
-title('x-y-z positioning hand')
-xlabel('x hand position')
-ylabel('y hand position')
-zlabel('z hand position')
-
-figure(9)
-plot3(handpositionx, handpositiony, tz, '-o')
-title('x-y position over time hand')
-xlabel('x hand position')
-ylabel('y hand position')
+plot3(handpositionx, handpositiony,tz,'o')
+title('x-y parametric position over time hand')
+xlabel('x hand position spline')
+ylabel('y hand position spline')
 zlabel('time')
 
-figure(10)
+figure(9)
 plot3(handpositionx, handpositionz, tz, '-o')
 title('x-z position over time hand')
 xlabel('x hand position')
 ylabel('z hand position')
 zlabel('time')
 
-figure(11)
+figure(10)
 plot3(handpositiony, handpositiony, tz, '-o')
 title('y-z position over time hand')
 xlabel('y hand position')
 ylabel('z hand position')
 zlabel('time')
 
-%hand velocity initial
-%n=90;
-%instantvelocity=(1/ty)*sqrt((x[n]-x[n-1])^2+(y[n]-y[n-1])^2+
-%(z[n]-z[n-1])^2);
-
-%[B,TF] = rmoutliers(XX,'movmedian',0.05,'SamplePoints',t);
-%plot(t,XX,'b.-',t(~TF),B,'r.-')
-%legend('Input Data','Output Data')
-
-
-% 
-% %% Position - y vs time
-% YY = yarr';
-% t = time';
-% figure(5)
-% plot(t,YY,'o')
-% title('Y Position over Time')
-% xlabel('time (sec)')
-% ylabel('y (m)')
-% 
-% figure(6)
-% curvefit_y = fit(t,YY,'poly2','normalize','off');
-% plot(curvefit_y,t,YY);
-% title('Best Fit Curve of Y Position over Time')
-% xlabel('time (sec)')
-% ylabel('y (m)')
-% 
-% time_final = 7;
-% curvefit_y(time_final);
-% 
-% formula(curvefit_y);
-% p8 = curvefit_y.p1;
-% p9 = curvefit_y.p2;
-% p10 = curvefit_y.p3;
-% %p11 = curvefit_y.p4;
-% equation_y = p8*(t.^2) + p9*t + p10;
-% fprintf('Y Equation: %ft^2 + %ft + %f \n', p8,p9,p10);
-% 
-% % Differentiate to get the predicted velocity in y direction
-% figure(7)
-% fy = differentiate(curvefit_y,t);
-% plot(t,fy,'o');
-% 
-% % Get equation of least squares fit line
-% curvefit_y_velo = fit(t,fy,'poly1','normalize','off');
-% plot(curvefit_y_velo,t,fy);
-% title('Predicted Y-Velocity over Time')
-% xlabel('time (sec)')
-% ylabel('Vy (m/s)')
-% 
-% time_final = 7;
-% curvefit_y_velo(time_final);
-% 
-% formula(curvefit_y_velo);
-% p12 = curvefit_y_velo.p1;
-% p13 = curvefit_y_velo.p2;
-% %p14 = curvefit_y_velo.p3;
-% equation_velo_y = p12*t + p13;
-% fprintf('Y Velocity Equation: %ft + %f \n', p12,p13);
-% 
-% %% Predicted Velocity without Magnitude
-% velocity = sqrt(((fx).^2) + ((fy).^2));
-% figure(8)
-% plot(t,velocity, 'o')
-% title('Velocity over Time')
-% xlabel('time (sec)')
-% ylabel('Velocity')
-%  
-% % Get equation of least squares fit line
-% curvefit_velo = fit(t,velocity,'poly1','normalize','off');
-% plot(curvefit_velo,t,velocity);
-% title('Predicted Velocity over Time')
-% xlabel('time (sec)')
-% ylabel('Velocity (m/s)')
-%  
-% time_final = 7;
-% curvefit_velo(time_final);
-%  
-% formula(curvefit_velo);
-% p15 = curvefit_velo.p1;
-% p16 = curvefit_velo.p2;
-% %p17 = curvefit_velo.p3;
-% equation_velo = p15*t + p16;
-% fprintf('Velocity Equation: %ft + %f \n', p15,p16);
-% 
-% %% Predicted Acceleration
-% % Differentiate to get the predicted acceleration
-% figure(9)
-% facc = differentiate(curvefit_velo,t);
-% plot(t,facc,'o');
-% 
-% % Get equation of least squares fit line
-% curvefit_acc = fit(t,facc,'poly1','normalize','off');
-% plot(curvefit_acc,t,facc);
-% title('Predicted Acceleration over Time')
-% xlabel('time (sec)')
-% ylabel('Acceleration (m/s^2)')
-% 
-% time_final = 7;
-% curvefit_acc(time_final);
-% 
-% formula(curvefit_acc);
-% p18 = curvefit_acc.p1;
-% p19 = curvefit_acc.p2;
-% %p20 = curvefit_acc.p3;
-% equation_acc = p19;
-% fprintf('Acceleration Equation: %f \n', p19);
-
-
-% %% Final Time
-% 
-% xf = 252; %inches
-% xfm = (xf/39.37) - x(1); %meters
-% c = -xfm;
-% v0 = p6;
-% a0 = p5;
-% a = a0/2;
-% tf1 = (-v0+sqrt((v0^2)-(4*a*c)))/(2*a);
-% tf2 = (-v0-sqrt((v0^2)-(4*a*c)))/(2*a);
-% 
-% tf = min(abs(tf1),abs(tf2));
-% 
-% h = p8*(tf^2) + p9*tf + p10;
-% fprintf('%g %g %g \n',tf1,tf2,h)
+instantvelocity=0;
+for z=1:89
+ instantvelocity=instantvelocity+30*sqrt((handpositionx[z]-handpositionx[z-1])^2+(handpositiony[z]-handpositiony[z-1])^2+(handpositionz[z]-handpositionz[z-1])^2));
+end
+fprintf('%.4f',instantvelocity);
+% hand velocity initial
+% n=90;vfxs
+% instantvelocity=(1/ty)*sqrt((x[n]-x[n-1])^2+(y[n]-y[n-1])^2+
+% (z[n]-z[n-1])^2);
 
