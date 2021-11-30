@@ -122,7 +122,7 @@ for idx=1:1:15000
         %set(gca,'ztick',[]) 
         view([0 90])
 %        ylim([0 max(r_vect)]);
-        ylim([0 22]);
+        ylim([0 1]);
         xlim([-vmax max(v_vect)]);
         % zlim([40 140])
         ylabel('Range (m)');
@@ -144,11 +144,11 @@ for idx=1:1:15000
     
 end
     
-%     figure(2)
-%     imagesc(RD_plot)
-%     figure(3)
-%     plot(RD_plot(25,:))
-%     [pks loc] = findpeaks(RD_plot(25,:))
+    figure(2)
+    imagesc(RD_plot)
+    figure(3)
+    plot(RD_plot(25,:))
+    [pks loc] = findpeaks(RD_plot(25,:))
 
 
 boardRadar.stopMeasurements();
