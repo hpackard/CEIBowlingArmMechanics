@@ -195,12 +195,13 @@ board.delete();
 
 %for debugging, unload the wrapper dll to be able to update it
 clear wrapper_matlab
-
-plot(y,-x,'o');
-title('Scatterplot of x and y Positional Values');
-xlabel('Horizontal distance from radar');
-ylabel('Vertical distance from radar');
-%  
+tball=1:length(x);
+plot3(tball, x,y,'o');
+title('x and y ball position over time');
+ylabel('Horizontal distance from radar');
+zlabel('Vertical distance from radar');
+xlabel('time(sec)');
+ 
 fileID = fopen('Positional_Values.txt','w');
 fprintf(fileID,'%f ',y);
 fprintf(fileID,'\n');
