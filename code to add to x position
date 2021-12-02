@@ -1,0 +1,1 @@
+fprintf('the release x velocity is %f m/s\n', x_velocityhand(45))
