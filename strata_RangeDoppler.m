@@ -54,13 +54,12 @@ if sequence.modulation == 0
 end
 %maximum velocity
 f_sin = sequence.ramps(1).fStart+sequence.ramps(1).fDelta/2;
-vmax=c0/2/(f_sin)/PRT/2; 
-% vmax=c0*2/(f_sin)/PRT;trying to increase vmax
+vmax=c0/2/(f_sin)/PRT/2;
 rmax=mmicConfig.sampleRate*tsw/bsw*c0/2/2;
-%figure out how to change this for bowling application
+
 r_vect=linspace(0,0.5-1/NoRange,NoRange)*rmax*2;
-%v_vect=linspace(-0.5,0.5-1/ramps,ramps)*2*vmax;
-v_vect=linspace(-0.5, 1.5-1/ramps, ramps)*2*vmax;
+v_vect=linspace(-0.5,0.5-1/ramps,ramps)*2*vmax;
+
 
 FftBinSz = 8; % bytes;
 nciBinSz = 4; % bytes;
@@ -90,9 +89,11 @@ box on;
 
 boardRadar.startMeasurements();
 
-for idx=1:1:15000
+for idx=1:1:100
     idx
-   
+    
+    z = posixtime(datetime(datestr(now)));
+    fprintf('%d',z)    
     
     [measurement, timeStamp] = board.getFrameBuffer();
 
@@ -112,44 +113,56 @@ for idx=1:1:15000
     RD_plot = fftshift(RD_plot.',2);
     RD_plot = 10*log10(RD_plot);
     RD_plot(RD_plot<0) = 0;
-   
-
+    
+    
     if idx==1
         h=surf(v_vect,r_vect,RD_plot);
+        %
+        RD1 = RD_plot;
         colormap 'jet';
         caxis([60 130]);
         shading interp;
         %set(gca,'ztick',[]) 
         view([0 90])
-%        ylim([0 max(r_vect)]);
-        ylim([0 1]);
+        ylim([0 10]);
         xlim([-vmax max(v_vect)]);
-        % zlim([40 140])
+        zlim([40 140])
         ylabel('Range (m)');
         xlabel('Velocity (m/s)');
         zlabel('Magnitude (dB)');
         %set(gca,'FontSize',18);
-%         figure(8)
-%         A = mean(RD_plot, 1)
-%         plot(A)
+
     end
     
-    if ~ishandle(h) % returns an array that contains 1's where the elements of h are valid graphics handles and 0's where they are not.
+    if ~ishandle(h)
         break;
     end
+    %
+    %set(h,'ZData',RD_plot);
+    RD_plot_new = RD_plot - RD1;
+    set(h,'ZData',RD_plot_new);
+    drawnow;
+    figure(8)
+    A = mean(RD_plot_new, 1);
+    plot(A)
     
-    set(h,'ZData',RD_plot);
-    drawnow;    %updates figures and processes any pending callbacks. Use this command if you modify graphics objects and want to see the updates on the screen immediately.
-
     
+    if (max(RD_plot_new(:))>51)
+        [i,j] = find(RD_plot_new>51);       
+        row = round(mean(i));         
+        col = round(mean(j));
+        timeidx(count) = idx/20;
+        velo(count) = v_vect(col);
+        ydrag(count) = .000582*velo(count);
+        range(count) = r_vect(row);
+                
+        if (count > 1)
+            accel(count) = (velo(count) - velo(count-1))/(timeidx(count)-timeidx(count-1));
+        end
+        
+        count = count + 1;
+    end
 end
-    
-    figure(2)
-    imagesc(RD_plot)
-    figure(3)
-    plot(RD_plot(25,:))
-    [pks loc] = findpeaks(RD_plot(25,:))
-
 
 boardRadar.stopMeasurements();
 
@@ -160,3 +173,12 @@ board.delete();
 %for debugging, unload the wrapper dll to be able to update it
 clear wrapper_matlab
 
+plot(timeidx,velo,'o');
+title('Scatterplot of Velocity vs. Time');
+xlabel('Time');
+ylabel('Velocity(m/s)');
+figure
+plot(timeidx,range,'o');
+title('Scatterplot of Range vs. Time');
+xlabel('Time');
+ylabel('Range(m/s)');
